@@ -1,7 +1,24 @@
+; Nathan Gibson
+; January 11, 2015
+;
+; Program solves the traveling salesman problem by taking a list of cities
+; and coordinates, permuting all possible orderings of the list and then
+; choosing the ordering that requires the least distance to be traveled. 
+;
+; example usage: (printcities (travel '((Atlanta (50 . 50))
+;            (Orlando (100 . -225))(Knoxville (60 . 100))(Dothan (10 . -75)))))
+
+
+
+; returns the minimum distance path by passing all permutations to 
+; the travelhelper function
+; 
 (defun travel (l)
     (travelhelper (permute l) l)
 )
 
+; finds the minimum distance of all permutations
+; 
 (defun travelhelper (l min)
     (cond
         ((not l) min)
@@ -10,10 +27,8 @@
     )
 )
 
-; takes a list that is made up of lists that contain
-; city names and their coordinates, prints out the
-; list with only city names seperated by newline
-;
+; takes the detailed list and prints out the city names followed by newlines
+; 
 (defun printcities (l)
     (cond
         ((not l) t)
@@ -21,10 +36,8 @@
     )
 )
 
-; takes a list of list containing cities and locations
-; and calculates the total distance that is required
-; to visit all of the cities
-;
+; calculates the distance traveled in one trip
+; 
 (defun totaldistancetraveled (l)
     (cond
         ((eq (len l) 2) (distancebetween (getx (car l)) (gety (car l)) 
@@ -57,6 +70,9 @@
      )
 )
 
+; all permutation code from:
+; http://cscnew.columbusstate.edu/eckart/classes/cpsc5135/topics/topic_05.shtml
+;
 (defun permute (x)
     (cond
         ((not x) nil)
@@ -65,7 +81,9 @@
     )
 )
 
-
+; uses each element of "member" as basis for a reduced permute problem
+; on the other elements of "list". Returns a list of lists.
+; 		
 (defun for_each (member list)
     (cond
         ((not member) nil)
@@ -85,7 +103,8 @@
     )
 )
 
-
+; removes only the first occurrence of "item" from the "list".
+;
 (defun remove_first (item list)
     (cond
         ((not list) nil)
@@ -94,7 +113,8 @@
     )
 )
 
-
+; cons the "item" onto each sublist in the "list".
+;
 (defun cons_each (item lists)
     (cond
         ((not lists) nil)
@@ -105,22 +125,19 @@
     )
 )
 
-; given a list in the format of (name (x . y))
-; retieves the name of the city
+; pulls name out of the list
 ;
 (defun getname (l)
     (car l)
 )
 
-; given a list in the format of (name (x . y))
-; retieves the name of the city
+; pulls x coordinate out of the list
 ;
 (defun getx (l)
     (car (car (cdr l)))
 )
 
-; given a list in the format of (name (x . y))
-; retieves the name of the city
+; pulls y cooridinate out of the list
 ;
 (defun gety (l)
     (cdr (car (cdr l)))
@@ -132,30 +149,11 @@
     (* n n)
 )
 
-; auxiliary function for determining the
-; length of a list
-;
+; auxiliary length function
+; 
 (defun len (l)
     (cond
         ((not l) 0)
         (t (+ 1 (len (cdr l))))
     )
 )
-
-(printcities (travel (quote 
-			(
-				(Atlanta (50 . 50))
-				(Orlando (100 . -225))
-				(Knoxville (60 . 100))
-				(Dothan (10 . -75))
-			)
-)))
-
-(printcities (travel (quote 
-			(
-				(Knoxville (60 . 100))
-				(Atlanta (50 . 50))
-				(Orlando (100 . -225))
-				(Dothan (10 . -75))
-			)
-)))
