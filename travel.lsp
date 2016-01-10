@@ -6,18 +6,23 @@
 ; choosing the ordering that requires the least distance to be traveled. 
 ;
 ; example usage: (printcities (travel '((Atlanta (50 . 50))
-;            (Orlando (100 . -225))(Knoxville (60 . 100))(Dothan (10 . -75)))))
+;                                       (Orlando (100 . -225))
+;                                       (Knoxville (60 . 100))
+;                                       (Dothan (10 . -75)))
+;                              )
+;                )
+   
 
 
-
-; returns the minimum distance path by passing all permutations to 
-; the travelhelper function
+; passes all permutations to the travelhelper function with the first element
+; being the initial minimum
 ; 
 (defun travel (l)
     (travelhelper (permute l) l)
 )
 
-; finds the minimum distance of all permutations
+; looks at each permutation of the list and uses totaldistancetraveled to
+; find the permutation that covers the least distance
 ; 
 (defun travelhelper (l min)
     (cond
@@ -32,7 +37,7 @@
 (defun printcities (l)
     (cond
         ((not l) t)
-        (t (or (format t "~a~%" (getname (car l))) (printcities (cdr l))))
+        (t (or (format t "~a~%" (car (car l))) (printcities (cdr l))))
     )
 )
 
@@ -40,12 +45,22 @@
 ; 
 (defun totaldistancetraveled (l)
     (cond
-        ((eq (len l) 2) (distancebetween (getx (car l)) (gety (car l)) 
-                                        (getx (car (cdr l))) (gety (car (cdr l)))))
+        ((eq (len l) 2) (distancebetween 
+                                         (car (car (cdr (car l))))
+                                         (cdr (car (cdr (car l))))
+                                         (car (car (cdr (car (cdr l)))))
+                                         (cdr (car (cdr (car (cdr l)))))
+                        )
+        )
         (t 
             (+ 
                 (totaldistancetraveled (cdr l))
-                (distancebetween (getx (car l)) (gety (car l)) (getx (car (cdr l))) (gety (car (cdr l))))
+                (distancebetween 
+                                (car (car (cdr (car l))))
+                                (cdr (car (cdr (car l))))
+                                (car (car (cdr (car (cdr l)))))
+                                (cdr (car (cdr (car (cdr l)))))
+                )
             )
         )                
     )
@@ -123,24 +138,6 @@
             (cons_each item (cdr lists)))
         )
     )
-)
-
-; pulls name out of the list
-;
-(defun getname (l)
-    (car l)
-)
-
-; pulls x coordinate out of the list
-;
-(defun getx (l)
-    (car (car (cdr l)))
-)
-
-; pulls y cooridinate out of the list
-;
-(defun gety (l)
-    (cdr (car (cdr l)))
 )
 
 ; auxiliary function for squaring numbers 
