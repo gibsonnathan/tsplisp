@@ -18,7 +18,7 @@
 ; being the initial minimum
 ; 
 (defun travel (l)
-    (printcities (travelhelper (permute l) l))
+    (travelhelper (permute l) l)
 )
 
 ; looks at each permutation of the list and uses totaldistancetraveled to
