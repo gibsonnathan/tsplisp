@@ -18,7 +18,7 @@
 ; being the initial minimum
 ; 
 (defun travel (l)
-    (travelhelper (permute l) l)
+    (printcities (travelhelper (permute l) l))
 )
 
 ; looks at each permutation of the list and uses totaldistancetraveled to
@@ -85,7 +85,8 @@
      )
 )
 
-; all permutation code from:
+; all permutation code including permute, for_each, remove_ first,
+; and cons_each functions from:
 ; http://cscnew.columbusstate.edu/eckart/classes/cpsc5135/topics/topic_05.shtml
 ;
 (defun permute (x)
